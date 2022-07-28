@@ -21,8 +21,8 @@ const catalogue = {
     songs: [],
     pictures: []
 };
-let guessedNumber;
-let guessedMediaNumber;
+let actionNumber;
+let chooseMediaNumber;
 
 async function welcome(){
     rl.write ("Welcome to Catalogue!\n");
@@ -33,106 +33,134 @@ async function welcome(){
     rl.write ("If you want to edit any media in the Catalogue input 4.\n");
     rl.write("To exit press ctrl + c.\n");
 
-    guessedNumber = Number(await question('Please, input your choice: '));
+    actionNumber = Number(await question('Please, input your choice: '));
     return;
 }
 
 welcome()
   .then(() => {
     rl.write("Good choice!");
-    return guessedNumber;
+    return actionNumber;
   })
-  .then(toDo)
+  .then(action)
 
 .catch(console.error);
 
 
-async function toDo(guessedNumber){   //показать калалог
-  if (guessedNumber === 1){
+async function action(actionNumber){   //показать калалог
+  if (actionNumber === 1){
     rl.write("Look what we have!\n");
     console.table(catalogue);
-  } else if (guessedNumber === 2){  //удаление медиа
+  } else if (actionNumber === 2){  //добавление медиа
     
-    choiceMedia()
+    chooseMedia()
     .then (addMedia)
     
   
   }
-  process.exit(0);
+  //process.exit(0);
 }
 
-async function choiceMedia(){        //выбор медиа
+async function chooseMedia(){        //выбор медиа
   rl.write ("What kind of media?\n");
   rl.write ("if your choice is a Film input 1.\n");
   rl.write ("if your choice is a Book input 2.\n");
   rl.write ("if your choice is a Picture input 3.\n");
   rl.write ("if your choice is a Song input 4.\n");
     
-  guessedMediaNumber = Number( await question ("Input your choice:"));
-   return guessedMediaNumber;
+  chooseMediaNumber = Number( await question ("Input your choice:"));
+   return chooseMediaNumber;
+   
 }
 
-async function addMedia ( guessedMediaNumber){
+async function addMedia ( chooseMediaNumber){                         //добавление медиа
 
-  console.log( "work");
+  if (chooseMediaNumber === 1){                             // добавление фильма
+    
+    let name = await question ("Input name of the film:");
+    let author = await question ("Input author of the film:");
+    let yearOfCreation = await question ("Input the year of creation:");
+    let genre = await question("What kind of genre is this film:");
+    
+    getFilm(name, author,yearOfCreation,genre)
+    console.table(catalogue);
+  } else if (chooseMediaNumber === 2 ){                              //добавление книги
+    let name = await question ("Input name of the book:");
+    let author = await question ("Input author of the book:");
+    let yearOfCreation = await question ("Input the year of creation:");
+    let language = await question("Input the language of the book:");
 
-  if (guessedMediaNumber === 1){
-    let newFilm = {};
-    newFilm.name = await question ("Input name of the film:");
-    newFilm.author = await question ("Input author of the film:");
-    newFilm.yearOfCreation = await question ("Input the year of creation:");
-    newFilm.genre = await question("What kind of genre is this film:");
-    catalogue.films.push(newFilm);
-  } else console.log("idgsldkjsldfjlsdfj");
+    getBook(name, author, yearOfCreation, language)
+    console.table(catalogue);
+  } else if (chooseMediaNumber === 3){                            // добавление картины
+    let name = await question ("Input name of the picture:");
+    let author = await question ("Input author of the picture:");
+    let yearOfCreation = await question ("Input the year of creation:");
+    let technique = await question("What technique was used:");
+    
+    getPicture(name, author,yearOfCreation,technique)
+    
+    console.table(catalogue);
+  } else if (chooseMediaNumber === 4){                            // добавление песни
+    let name = await question ("Input name of the song:");
+    let author = await question ("Input author of the song:");
+    let yearOfCreation = await question ("Input the year of creation:");
+    let tempo = await question("What tempo is in this song:");
+    
+    getSong(name, author,yearOfCreation,tempo)
+    
+    console.table(catalogue);
+  } else console.log("You input a wrong number");
+  process.exit(0);
 }
 
 
 
 
-// function  getFilm (name, author, yearOfCreation, genre){
+function  getFilm (name, author, yearOfCreation, genre){
 
-//     if (catalog.films.includes(name)){
-//         return "This one already includes" 
-//     } else{
-//         let a = new Film (name, author, yearOfCreation, genre);
-//         catalog.films.push(a);
-//     }
-//     return catalog;
-// }
+    if (catalogue.films.includes(name)){
+        return "This one already includes" 
+    } else{
+        let film = new Film (name, author, yearOfCreation, genre);
+        catalogue.films.push(film);
+    }
+    return catalogue;
+}
 
-// function getBook (name, author, yearOfCreation, language){
+function getBook (name, author, yearOfCreation, language){
 
-//     if (catalog.books.includes(name)){
-//         return "This one already includes"
-//     } else{
-//         let a = new Book (name, author, yearOfCreation, language);
-//         catalog.books.push(a);
-//     }
-//     return catalog;
-// }
+    if (catalogue.books.includes(name)){
+        return "This one already includes"
+    } else{
+        let a = new Book (name, author, yearOfCreation, language);
+        catalogue.books.push(a);
+    }
+    return catalogue;
+}
 
-// function getSong (name, author, yearOfCreation, tempo){
+function getSong (name, author, yearOfCreation, tempo){
 
-//     if (catalog.songs.includes(name)){
-//         return "This one already includes"
-//     } else{
-//         let a = new Song (name, author, yearOfCreation, tempo);
-//         catalog.songs.push(a);
-//     }
-//     return catalog;
-// }
+    if (catalogue.songs.includes(name)){
+        return "This one already includes"
+    } else{
+        let a = new Song (name, author, yearOfCreation, tempo);
+        catalogue.songs.push(a);
+    }
+    return catalogue;
+}
 
-// function getPicture (name, author, yearOfCreation, technique){
+function getPicture (name, author, yearOfCreation, technique){
 
-//     if (catalog.pictures.includes(name)){
-//         return "This one already includes"
-//     } else{
-//         let a = new Picture (name, author, yearOfCreation, technique);
-//         catalog.pictures.push(a);
-//         console.log(catalog)
-//     }
-//     return catalog;
-// }
+    if (catalogue.pictures.includes(name)){
+        return "This one already includes"
+    } else{
+        let a = new Picture (name, author, yearOfCreation, technique);
+        catalogue.pictures.push(a);
+        console.log(catalogue)
+    }
+    return catalogue;
+}
 
 // let b = getPicture( "lilly", "life", 2012, "oil");
 // let c = getPicture( "lilly", "crazy", 2112, "blood");
