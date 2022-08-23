@@ -16,7 +16,7 @@ const rl = readline.createInterface({
 const question = util.promisify(rl.question).bind(rl);
 
 const catalogue = {
-    films: ["one", "two"],
+    films: [],
     books: [],
     songs: [],
     pictures: []
@@ -43,8 +43,13 @@ welcome()
     return actionNumber;
   })
   .then(action)
+  .then (()=>{
+    rl.write("Do you want to do something else?");
+  })
 
 .catch(console.error);
+
+
 
 
 async function action(actionNumber){   //показать калалог
@@ -55,10 +60,8 @@ async function action(actionNumber){   //показать калалог
     
     chooseMedia()
     .then (addMedia)
-    
-  
+      
   }
-  //process.exit(0);
 }
 
 async function chooseMedia(){        //выбор медиа
@@ -83,7 +86,7 @@ async function addMedia ( chooseMediaNumber){                         //доба
     let genre = await question("What kind of genre is this film:");
     
     getFilm(name, author,yearOfCreation,genre)
-    console.table(catalogue);
+    console.table(catalogue.films);
   } else if (chooseMediaNumber === 2 ){                              //добавление книги
     let name = await question ("Input name of the book:");
     let author = await question ("Input author of the book:");
@@ -111,26 +114,35 @@ async function addMedia ( chooseMediaNumber){                         //доба
     
     console.table(catalogue);
   } else console.log("You input a wrong number");
-  process.exit(0);
+  //  process.exit(0);
 }
 
 
 
 
 function  getFilm (name, author, yearOfCreation, genre){
-
-    if (catalogue.films.includes(name)){
+  let namesOfFilms = [];
+   for ( let i = 0; i < catalogue.films.length; i++){
+    let nameOne = catalogue.films[i].name;
+    namesOfFilms.push(nameOne);
+   }
+    if (namesOfFilms.includes(name)){
         return "This one already includes" 
     } else{
         let film = new Film (name, author, yearOfCreation, genre);
         catalogue.films.push(film);
     }
+    console.log(catalogue.films[0].name)
     return catalogue;
 }
 
 function getBook (name, author, yearOfCreation, language){
-
-    if (catalogue.books.includes(name)){
+  let namesOfBooks = [];
+  for ( let i = 0; i < catalogue.books.length; i++){
+   let nameOne = catalogue.books[i].name;
+   namesOfBooks.push(nameOne);
+  }
+   if (namesOfBooks.includes(name)){
         return "This one already includes"
     } else{
         let a = new Book (name, author, yearOfCreation, language);
@@ -140,8 +152,12 @@ function getBook (name, author, yearOfCreation, language){
 }
 
 function getSong (name, author, yearOfCreation, tempo){
-
-    if (catalogue.songs.includes(name)){
+  let namesOfSongs = [];
+  for ( let i = 0; i < catalogue.songs.length; i++){
+   let nameOne = catalogue.songs[i].name;
+   namesOfSongs.push(nameOne);
+  }
+   if (namesOfSongs.includes(name)){
         return "This one already includes"
     } else{
         let a = new Song (name, author, yearOfCreation, tempo);
@@ -151,8 +167,12 @@ function getSong (name, author, yearOfCreation, tempo){
 }
 
 function getPicture (name, author, yearOfCreation, technique){
-
-    if (catalogue.pictures.includes(name)){
+  let namesOfPictures = [];
+  for ( let i = 0; i < catalogue.pictures.length; i++){
+   let nameOne = catalogue.pictures[i].name;
+   namesOfPictures.push(nameOne);
+  }
+   if (namesOfPictures.includes(name)){
         return "This one already includes"
     } else{
         let a = new Picture (name, author, yearOfCreation, technique);
