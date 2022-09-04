@@ -38,22 +38,24 @@ async function mainLoop(){
 
     let actionNumber;
 
-    while (true){
+    
     actionNumber = Number(await question('Please, input your choice: '));
     if (actionNumber === 5){
         rl.write("Ok,see you later!\n");
-        break;
+        return;
     } else if ( actionNumber === 1){
         rl.write("Look what we have!\n");
         console.table(catalogue);
+        return await mainLoop();
     } else if ( actionNumber === 2){
         chooseMedia()
         .then (addMedia)
+       
     } else {
         rl.write("i don't know")
+        return await mainLoop();
     }
-    }
-    return;
+    
 }
 
 mainLoop()
@@ -87,6 +89,8 @@ async function chooseMedia(){        //выбор медиа
       
       getFilm(name, author,yearOfCreation,genre)
       console.table(catalogue.films);
+      return await mainLoop();
+
     } else if (chooseMediaNumber === 2 ){                              //добавление книги
       let name = await question ("Input name of the book:");
       let author = await question ("Input author of the book:");
@@ -95,6 +99,8 @@ async function chooseMedia(){        //выбор медиа
   
       getBook(name, author, yearOfCreation, language)
       console.table(catalogue);
+      return await mainLoop();
+
     } else if (chooseMediaNumber === 3){                            // добавление картины
       let name = await question ("Input name of the picture:");
       let author = await question ("Input author of the picture:");
@@ -104,6 +110,8 @@ async function chooseMedia(){        //выбор медиа
       getPicture(name, author,yearOfCreation,technique)
       
       console.table(catalogue);
+      return await mainLoop();
+      
     } else if (chooseMediaNumber === 4){                            // добавление песни
       let name = await question ("Input name of the song:");
       let author = await question ("Input author of the song:");
@@ -113,7 +121,10 @@ async function chooseMedia(){        //выбор медиа
       getSong(name, author,yearOfCreation,tempo)
       
       console.table(catalogue);
+      
+      
     } else console.log("You input a wrong number");
+  
     //  process.exit(0);
   }
   
